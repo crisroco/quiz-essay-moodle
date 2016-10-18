@@ -17,16 +17,6 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 print $OUTPUT->header();
 
-/*
-// $attempts = quiz_get_user_attempts($quiz->id, $userid, 'finished');
- $attempts = quiz_get_user_attempts(19, 107, 'finished');
- foreach ($attempts as $key => $value) {
-  
- echo "<pre>";
-    print_r($value);   
-echo "<pre>";
- }
-die();*/
 
 
 //intentos de cada pregunta, tipo de pregunta y respuesta marcada, por alumno
@@ -36,7 +26,7 @@ INNER JOIN {course} c ON c.id = cm.course
 INNER JOIN {quiz} q ON c.id = q.course 
 INNER JOIN {quiz_attempts} qa ON q.id = qa.quiz 
 INNER JOIN {user} u ON qa.userid = u.id
-INNER JOIN {question_attempts} qna ON qa.id = qna.questionusageid
+INNER JOIN {question_attempts} qna ON qa.uniqueid = qna.questionusageid
 INNER JOIN {question} qn ON qna.questionid = qn.id 
 WHERE cm.id IN (?)
 AND cm.instance = q.id
@@ -52,7 +42,7 @@ $sqluser = "SELECT qna.id as qna, qa.userid, u.firstname, u.lastname
                 INNER JOIN {quiz} q ON c.id = q.course 
                 INNER JOIN {quiz_attempts} qa ON q.id = qa.quiz 
                 INNER JOIN {user} u ON qa.userid = u.id
-                INNER JOIN {question_attempts} qna ON qa.id = qna.questionusageid
+                INNER JOIN {question_attempts} qna ON qa.uniqueid = qna.questionusageid
                 INNER JOIN {question} qn ON qna.questionid = qn.id 
                 WHERE cm.id IN (?)
                 AND cm.instance = q.id 
@@ -145,13 +135,16 @@ foreach ($users as $key => $value) {
         array_push($questiontyp, $value);
     }else{
         continue;
-    }                    
+    } 
+                   
                   
 }
 
 //echo "<script src='//cdn.tinymce.com/4/tinymce.min.js'></script>";
 //echo "<script>tinymce.init({ selector:'textarea' });</script>";
 echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>";
+
+
 
 
 foreach ($questiontyp as $key => $value) {
@@ -247,6 +240,14 @@ foreach ($questiontyp as $key => $value) {
 echo $out;
 
 }
+
+
+$PAGE->requires->js_call_amd('local_essay_amag/module', 'init');
+print $OUTPUT->footer();
+
+
+
+//La calificación se encuentra fuera del rango válido.
 /*echo "
     <script>
       $(function update() {
@@ -275,12 +276,4 @@ echo $out;
       });
     </script>
         ";*/
-
-
-$PAGE->requires->js_call_amd('local_essay_amag/module', 'init');
-print $OUTPUT->footer();
-
-
-
-//La calificación se encuentra fuera del rango válido.
 

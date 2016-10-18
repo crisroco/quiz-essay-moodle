@@ -21,7 +21,7 @@ define(['jquery'], function($) {
 	                $("#grade_error").html("");
 	              if (data == "grade_error") {
 	                $("#grade_error"+key[3]).html("<span class='error' >La calificación se encuentra fuera del rango válido</span>");
-	                //$("#grade").val("");
+	                $("#grade").val("");
 	                //$("#grade_error").html(key);
 
 	              }else{

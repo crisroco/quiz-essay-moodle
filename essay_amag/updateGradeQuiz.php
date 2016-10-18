@@ -94,7 +94,7 @@ $fraction = $nota/$maxmark;
 
 $sql_steps = "SELECT qnas.id as stepid, qna.questionid ,qna.id as qnaid, qa.quiz, qnas.userid as userid, qa.state, qa.sumgrades, qna.maxmark, qna.responsesummary as respuesta, qnas.fraction, qnas.timecreated 
 	FROM {quiz_attempts} qa
-	INNER JOIN {question_attempts} qna ON qa.id = qna.questionusageid
+	INNER JOIN {question_attempts} qna ON qa.uniqueid = qna.questionusageid
 	INNER JOIN {question_attempt_steps} qnas ON qna.id = qnas.questionattemptid
 	WHERE qa.quiz IN (?) 
 	AND qa.userid IN (?)
@@ -147,7 +147,7 @@ if ($sumgrades != null) {
 
 		$DB->update_record('quiz_grades',  $create4);
 
-		//echo "ROW in quiz_grades UPDATED CREATED <br>";		
+		//echo "ROW in quiz_grades CREATED <br>";		
 	}else{
 
 		$create4 = new stdClass();
